@@ -1,0 +1,361 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>产品调研报告生成系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{% static "/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+
+    <!-- js 函数 动态地为用户的输入增加新行 -->
+    <script>
+        // 初始状态有3行
+        window.rowNumber =3;
+        function addNewRow() {
+            var tag = document.getElementById("development_tag");
+
+            //var strNewRow = '<div class="row"><div class="col-md-2"><h4 class="text-right"> 产品名：</h4></div><div class="col-md-4"><input type="text" name="product1" class="form-control" placeholder="产品名" required autofocus></div><div class="col-md-2"><h4 class="text-right">  产品Url：</h4></div><div class="col-md-4"><input type="text" name="productUrl1" class="form-control" placeholder="产品Url链接" required ></div></div><hr>'
+            window.rowNumber +=1;
+            //  <div class="row">
+            var newRow = document.createElement("div");
+            newRow.setAttribute("class","row");
+            //删除新建行的时候可以用得上
+            newRow.setAttribute("id","row"+rowNumber);
+            // 接下来在row中创建 栅格项
+            // 栅格1 产品名
+            var div1 = document.createElement("div");
+            div1.setAttribute("class","col-md-2");
+            var productName = document.createElement("h4");
+            productName.setAttribute("class","text-right");
+            productName.innerText="产品名：";
+            div1.append(productName);
+
+            // 栅格2  输入产品名的input
+            var div2 = document.createElement("div");
+            div2.setAttribute("class","col-md-4");
+            var productNameInput = document.createElement("input");
+            productNameInput.setAttribute("type","text");
+            productNameInput.setAttribute("class","form-control");
+            productNameInput.setAttribute("name","product"+rowNumber);
+            productNameInput.setAttribute("placeholder","产品名");
+            div2.append(productNameInput);
+
+
+            // 栅格3 产品名
+            var div3 = document.createElement("div");
+            div3.setAttribute("class","col-md-2");
+            var productURLName = document.createElement("h4");
+            productURLName.setAttribute("class","text-right");
+            productURLName.innerText="产品Url：";
+            div3.append(productURLName);
+
+            // 栅格4  输入产品URL的input
+            var div4 = document.createElement("div");
+            div4.setAttribute("class","col-md-4");
+            var productUrlInput = document.createElement("input");
+            productUrlInput.setAttribute("type","text");
+            productUrlInput.setAttribute("class","form-control");
+            productUrlInput.setAttribute("placeholder","产品Url链接");
+            productUrlInput.setAttribute("name","productUrl"+rowNumber);
+            div4.append(productUrlInput);
+
+            newRow.append(div1);
+            newRow.append(div2);
+            newRow.append(div3);
+            newRow.append(div4);
+
+            tag.append(newRow);
+
+        }
+
+    </script>
+    <script>
+        function getRowNum() {
+            document.getElementById('numberOfRow').value = window.rowNumber.toString();
+        }
+    </script>
+    <!-- js 函数 删除所有用户增高的新行 -->
+    <script>
+        function deleteAllNewRow() {
+
+            if(rowNumber > 3){
+                var id = "row"+rowNumber;
+                var e = document.getElementById(id);
+                document.getElementById("development_tag").removeChild(e);
+                rowNumber--;
+            }else {
+                alert("已经将新增的行删除完毕")
+            }
+
+        }
+    </script>
+</head>
+
+</head>
+<body>
+   <div class="container">
+
+        <!-- 标题 -->
+       <div class="row">
+           <div class="col-md-6 col-md-offset-3" >
+               <h1 class="text-center">产品调研报告自动生成系统</h1>
+           </div>
+       </div>
+       <hr>
+
+       <!-- 表单开始 -->
+       <form class="form-signin" action="/getReuslt/" method="post">
+            {% csrf_token %}
+
+            <!-- 初始输入，3 行，产品名和产品URL  -->
+           <div class="row">
+
+               <div class="col-md-2">
+                   <h4 class="text-right"> 产品名：</h4>
+               </div>
+               <div class="col-md-4">
+                  <input type="text" name="product1" class="form-control" placeholder="产品名" required autofocus>
+               </div>
+               <div class="col-md-2">
+                   <h4 class="text-right">  产品Url：</h4>
+               </div>
+               <div class="col-md-4">
+                  <input type="text" name="productUrl1" class="form-control" placeholder="产品Url链接" required >
+               </div>
+           </div>
+           <hr>
+
+           <div class="row">
+               <div class="col-md-2">
+                   <h4 class="text-right"> 产品名：</h4>
+               </div>
+               <div class="col-md-4">
+                  <input type="text" name="product2" class="form-control" placeholder="产品名"  required >
+               </div>
+               <div class="col-md-2">
+                   <h4 class="text-right">  产品Url：</h4>
+               </div>
+               <div class="col-md-4">
+                  <input type="text" name="productUrl2" class="form-control" placeholder="产品Url链接" required>
+               </div>
+           </div>
+           <hr>
+
+           <div class="row">
+               <div class="col-md-2">
+                   <h4 class="text-right"> 产品名：</h4>
+               </div>
+               <div class="col-md-4">
+                  <input type="text" name="product3" class="form-control" placeholder="产品名" required >
+               </div>
+               <div class="col-md-2">
+                   <h4 class="text-right">  产品Url：</h4>
+               </div>
+               <div class="col-md-4">
+                  <input type="text" name="productUrl3" class="form-control" placeholder="产品Url链接" required>
+               </div>
+           </div>
+           <hr>
+
+           <!-- 动态增加行的标签-->
+           <div id="development_tag">
+
+           </div>
+
+
+            <!-- 用户输入，需要进行对比的关键词 -->
+           <hr>
+           <div class="row">
+               <div class="col-md-4">
+                   <h4 class="text-center">自选产品特性对比：</h4>
+               </div>
+               <div class="col-md-8">
+                   <input type="text" name="characters" class="form-control" placeholder="不输入则默认有水印，桌面摄像头组合录制，音频录制，鼠标特效等特点对比"  >
+               </div>
+           </div>
+           <hr>
+
+
+           <!-- 3个按钮，一个控制新增产品，一个删除新增行，一个控制提交表单 -->
+           <div class="row">
+               <div class="col-md-2">
+                   <button class="btn btn-lg btn-primary btn-block" type="button" onclick="addNewRow()">新增</button>
+               </div>
+               <div class="col-md-2">
+                   <button class="btn btn-lg btn-primary btn-block" type="button" onclick="deleteAllNewRow()">删除</button>
+               </div>
+               <div class="col-md-2">
+                   <input id="numberOfRow" type="hidden" name="numberOfRow" value="">
+               </div>
+               <div class="col-md-2"></div>
+               <div class="col-md-2"></div>
+               <div class="col-md-2">
+                   <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="getRowNum()">提交</button>
+               </div>
+           </div>
+
+       </form>  <!-- end of 表单 -->
+
+       <hr>
+
+
+
+   </div> <!-- /container -->
+   <!--  以下内容是后台爬虫生成的文件  -->
+
+   <div class="container">
+
+    <!--   输出表格  -->
+   {% if tables %}
+       <!--   报告标题  -->
+       <div class="row">
+           <div class="col-md-6 col-md-offset-3">
+               <h1 class="text-center">
+                   产品调研报告
+               </h1>
+           </div>
+       </div>
+
+       <!--  引言  -->
+       <div class="row">
+           <div class="col-md-12">
+               <h3>引言</h3><br>
+               <p >
+                   录屏软件在我们的生活中扮演着重要的角色。随着网络时代的到来，在线学习已经成为了一种趋势和潮流。
+                   人们足不出户便可以在网络上享受到 优质的网络学习资源。
+               </p>
+               <p >
+                   而那些在线的网课正是通过录屏软件录制的。在本篇产品调研报告中，我们将介绍和对比几款常见的录屏软件，介绍他们各自的
+                   特点和优势，且提供了下载链接，以供用户选择参考。
+               </p>
+           </div>
+       </div>
+       <hr>
+
+
+       <!--   对比表格  -->
+       <div class="row">
+           <div class="col-md-12">
+                <h3>多产品对比</h3>
+           </div>
+       </div>
+       <div class="row">
+            <div class="col-md-12">
+                <table border="1" class="center-block">
+                    <tr>
+                        <th>产品名称</th>
+                        <th>支持平台</th>
+                        <th>支持水印添加</th>
+                        <th>支持桌面、摄像头组合录制</th>
+                        <th>支持区域录屏</th>
+                        <th>支持音频录制</th>
+                        <th>支持自定义原画和码特率</th>
+                        <th>鼠标运动特效</th>
+                        <th>免费/付费</th>
+                        <th>下载链接</th>
+                    </tr>
+                    {#% 编写表格 %#}
+                   {% for table in tables %}
+                       <tr>
+                            <td>{{ table.产品名 }}</td>
+                            <td>{{ table.支持平台 }}</td>
+                            <td>{{ table.支持水印 }}</td>
+                            <td>{{ table.摄像头桌面组合录制 }}</td>
+                            <td>{{ table.区域录制 }}</td>
+                            <td>{{ table.音频录制 }}</td>
+                            <td>{{ table.画质调整 }}</td>
+                            <td>{{ table.鼠标特效 }}</td>
+                            <td>{{ table.费用 }}</td>
+                            <td>{{ table.下载链接 }}</td>
+                       </tr>
+                   {% endfor %}
+               </table><hr>
+            </div>
+
+       </div>
+
+   {% endif %} <!--  end of table  -->
+
+
+   {#% 输出产品信息 %#}
+   {% if products %}
+
+       <!--  小标题  -->
+        <div class="row">
+               <div class="col-md-12">
+                    <h3>单产品介绍</h3>
+               </div>
+        </div>
+        {% for product in products %}
+            {% for key,val in product.items %}
+                {#% 编写标题 %#}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>{{ key }}</h3>
+                    </div>
+                </div>
+
+                {#% 编写简介 %#}
+                {% if descriptions %}
+                    {% for item in descriptions %}
+                        {% if item.name == key %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4><b>产品简介</b></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>{{ item.description }}</p><br>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                {% endif %}
+
+
+                {#% 小标题 %#}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4><b>产品特点</b></h4>
+                    </div>
+                </div>
+                {#% 产品内容 %#}
+                <div class="row">
+                    <div class="col-md-12">
+                        {#% 编写内容 %#}
+                        {% for sentence in val %}
+                            {{ sentence }}<br>
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% endfor %}
+
+          <!--  总结  -->
+       <div class="row">
+           <div class="col-md-12">
+               <h2>总结</h2><br>
+               <p >
+                   以上便是本次产品调研报告的内容，用户可按照自己的需求对产品进行选择。
+               </p>
+           </div>
+       </div>
+   {% endif %} <!--  end of 产品介绍  -->
+
+
+    <!--  获取后台数据失败  -->
+   {% if failed %}
+       <p>获取后台数据失败</p>
+   {% endif %}
+   </div>
+
+
+   <!--  bootstra 要求加载的文件  -->
+   <script src="https://code.jquery.com/jquery.js"></script>
+   <script src="{% static "/js/bootstrap.min.js" %}"></script>
+</body>
+</html>

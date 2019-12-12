@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取产品关键词</title>
+</head>
+<body>
+    <form action="/search/" method="post">
+        {% csrf_token %}
+        产品名字：<input type="text" name="productName"><br>
+        产品URL：<input type="text" name="productUrl"><br>
+        <input type="submit" value="提交">
+    </form>
+
+    <hr>
+
+    {% if productName %}
+        <h3>这是生成的文档结果</h3>
+        <p> 产品名字：{{ productName }}</p>
+    {% endif %}
+
+    {% if productUrl %}
+        <p>产品URl：{{ productUrl }}</p>
+    {% endif %}
+
+
+</body>
+</html>
