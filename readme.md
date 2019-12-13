@@ -14,7 +14,7 @@
 
 **初始界面展示（注意是index目录）**
 
-![image-20191213101025635](D:\PycharmProjects\ReportGenWeb\picForMarkDown\image-20191213101025635.png)
+![初始界面](./picForMarkDown/image-20191213101025635.png)
 
 
 
@@ -22,13 +22,13 @@
 
 
 
-![image-20191213101140515](D:\PycharmProjects\ReportGenWeb\picForMarkDown\image-20191213101140515.png)
+![image-20191213101140515](./picForMarkDown/image-20191213101140515.png)
 
 
 
 **展示结果**
 
-![image-20191213101302162](D:\PycharmProjects\ReportGenWeb\picForMarkDown\image-20191213101302162.png)
+![image-20191213101302162](./picForMarkDown/image-20191213101302162.png)
 
 
 
