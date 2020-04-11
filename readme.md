@@ -14,7 +14,7 @@
 
 **初始界面展示（注意是index目录）**
 
-![image-20191213101025635](D:\PycharmProjects\ReportGenWeb\picForMarkDown\image-20191213101025635.png)
+![初始界面](./picForMarkDown/image-20191213101025635.png)
 
 
 
@@ -22,17 +22,18 @@
 
 
 
-![image-20191213101140515](D:\PycharmProjects\ReportGenWeb\picForMarkDown\image-20191213101140515.png)
+![image-20191213101140515](./picForMarkDown/image-20191213101140515.png)
 
 
 
 **展示结果**
 
-![image-20191213101302162](D:\PycharmProjects\ReportGenWeb\picForMarkDown\image-20191213101302162.png)
+![image-20191213101302162](./picForMarkDown/image-20191213101302162.png)
 
 
 
 系统生成的报告是粗糙的，需要经过人工二次审校放能使用。（V 0.0.1）
+<<<<<<< HEAD
 
 
 
@@ -49,3 +50,5 @@
 ![image-20200411142152225](picForMarkDown/image-20200411142152225.png)
 
 ![image-20200411142207793](picForMarkDown/image-20200411142207793.png)
+=======
+>>>>>>> 40b43e20b11ebe8a940271360055ca6e1a5ff495
