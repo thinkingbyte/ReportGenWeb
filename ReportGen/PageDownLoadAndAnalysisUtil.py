@@ -14,7 +14,6 @@ class DownloadAndAnalysisUtil:
         # 用来存放对产品名，产品描述
         self.genReportData = {}
 
-
     def downloadHTML(self,index):
         header = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
@@ -39,6 +38,7 @@ class DownloadAndAnalysisUtil:
         r.encoding = 'utf-8'
         return r.text
 
+    # 找到html 中的description介绍
     def findDescription(self,soup, index):
         # 找到网页中<meta name='description' content='..'> 其中content的内容可以作为产品的介绍部分，因为是写好的
         try:
@@ -57,6 +57,7 @@ class DownloadAndAnalysisUtil:
         except:
             print("no Description")
 
+    # 找到文章中的关键信息
     def findCharacter(self,divExceptLabel,index):
         # TODO 这也是一个需要改进的地方
         # 特征值查找
@@ -90,6 +91,7 @@ class DownloadAndAnalysisUtil:
         if 'VIP' or '会员' or '购买' in divExceptLabel:
             self.characterKeyList[index]['费用'] = '付费'
 
+    # 筛选
     def genReport(self,divExceptLabel,index):
         # TODO 用于文章筛选的关键字， 只有包含这些关键字的语句才会被保留下来，这是后期改进的重点之一
         keyList = ['录屏', '画质','图片','麦克风','录制', '录像', '特点','音频', '视频','水印','鼠标','摄像头','功能','色度','抠像']
@@ -132,10 +134,12 @@ class DownloadAndAnalysisUtil:
             # 使用body标签内容新建soup对象
             body = soup.find('body')
             soup1 = BeautifulSoup(str(body), 'lxml')
+
+
             #TODO 选择一张图片下载，作为演示图  现阶段可以后期手工贴图
             #allImages = soup1.find_all('img')
 
-            # 去除标签
+            # 去除HTML标签
             divExceptLabel = re.sub('<[^>]+>', '', soup1.text)
             #print(divExceptLabel)
 
@@ -160,6 +164,7 @@ if __name__ == '__main__':
         ]
     }
 
+    # 特征字典
     characterDictCopyDefault = {
         '产品名': ' ', '产品描述': ' ', '支持平台': ' ', '支持水印': ' ',
         '摄像头桌面组合录制': ' ', '区域录制': ' ', '音频录制': ' ', '画质调整': ' ',

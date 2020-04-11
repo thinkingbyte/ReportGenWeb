@@ -5,10 +5,9 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.decorators import csrf
-
+from ReportGen.ScreenCutUtil import ScreenCut
 from ReportGen.PageDownLoadAndAnalysisUtil import DownloadAndAnalysisUtil
-
+import os
 
 def hello(request):
     return HttpResponse("Hello man ")
@@ -23,8 +22,9 @@ def search(request):
         contenxt['productUrl'] = request.POST['productUrl']
     return render(request,"search.html",contenxt)
 
-def getResult(request):
 
+
+def getResult(request):
 
     # 输入的产品数量
     numberOfRow=0
@@ -55,10 +55,10 @@ def getResult(request):
     except:
         contents = {'failed': " "}
         print("读取数据失败")
-        return render(request, 'index.html', contents)
+        return render(request, 'error.html', contents)
 
 
-    #######################################################################
+    ###########################################################################################################################
     # 爬虫处理的部分
 
     #这是默认产品的特性，我们去爬取下来的文字中去检索是否有这些信息
@@ -68,6 +68,7 @@ def getResult(request):
     #         'supportCameraAndDesktop': ' ', 'supportPartArea': ' ','supportAudio': ' ', 'supportImageQualityAdjust': ' ',
     #         'supportMouseEffect': ' ', 'PayOrFree': ' ','downloadLink': ' '}
 
+    # 这是一个模板字典
     characterDictCopyDefault = {
         '产品名': ' ', '产品描述': ' ', '支持平台': ' ', '支持水印': ' ',
         '摄像头桌面组合录制': ' ', '区域录制': ' ', '音频录制': ' ', '画质调整': ' ',
@@ -90,6 +91,7 @@ def getResult(request):
 
     #  初始化一个内容解析器 并
     analysisUtil = DownloadAndAnalysisUtil(productNameAndUrlDict,characterKeysDict)
+
     # 调用内容解析函数，返回每个产品的介绍和表格的内容, 传入的参数是用于描述表格的行，
     # contentsToWeb 键-值（列表）
     # tableValue  键-值(列表（字典）)
@@ -98,7 +100,7 @@ def getResult(request):
 
 
     # 新建的字典数据，传回前端，用于HTML展示
-    result = {'products':[],'tables':[],'descriptions':[]}
+    result = {'products':[],'tables':[],'descriptions':[],'pic':[]}
     result['products'].append(contentsToWeb)
     #result['tables'] = tableValue['productItems']
     result['tables'] = tableValue
@@ -106,9 +108,19 @@ def getResult(request):
         result['descriptions'].append( {'name':item['产品名'],'description':item['产品描述']} )
 
 
-    print(len(result['products']),result['products'])
-    print(len(result['tables']),result['tables'])
-    print(len(result['descriptions']),result['descriptions'])
+    # 如果该目标url的截图尚未获取过，则获取页面截图
+    cutPicNameList = os.listdir("D:\\PycharmProjects\\ReportGenWeb\\static\\image")
+    for productDict in productNameAndUrlDict["products"]:
+        if productDict["productName"]+".jpg" not in cutPicNameList:
+            screenCut = ScreenCut(productDict["url"], productDict["productName"])
+            screenCut.cutScreen()
+        else:
+            print(productDict["productName"]+"截图已经缓存")
+
+
+    # print(len(result['products']),result['products'])
+    # print(len(result['tables']),result['tables'])
+    # print(len(result['descriptions']),result['descriptions'])
 
     #######################################################################
 

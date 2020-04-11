@@ -70,6 +70,7 @@
         }
 
     </script>
+    <!-- js 函数 获取当前行数 -->
     <script>
         function getRowNum() {
             document.getElementById('numberOfRow').value = window.rowNumber.toString();
@@ -288,7 +289,7 @@
                </div>
         </div>
         {% for product in products %}
-            {% for key,val in product.items %}
+            {% for key,val in product.items %} <!--  key val ==  '迅捷屏幕录像工具': ['迅捷屏幕录像工具免费试用版Windows', '多模式、多格式、多音源、多种画质可选的屏幕录像工具'....] -->
                 {#% 编写标题 %#}
                 <div class="row">
                     <div class="col-md-12">
@@ -296,6 +297,14 @@
                     </div>
                 </div>
 
+                <!-- 插入该官网的图片-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <img src="/static/image/{{ key }}.jpg" class="img-responsive"/>
+                    </div>
+                </div>
+
+{
                 {#% 编写简介 %#}
                 {% if descriptions %}
                     {% for item in descriptions %}
@@ -333,7 +342,7 @@
                 </div>
                 <hr>
             {% endfor %}
-        {% endfor %}
+        {% endfor %} <!--  end of 产品文章遍历  -->
 
           <!--  总结  -->
        <div class="row">
