@@ -25,6 +25,7 @@ class ScreenCut():
             win = tkinter.Tk()
             width = win.winfo_screenwidth()
             height = win.winfo_screenheight()
+            time.sleep(1);
             img = ImageGrab.grab(bbox=(0, 0, width, height - 50))
             img.save("./static/image/" + self.name + '.jpg')
             # 关闭浏览器

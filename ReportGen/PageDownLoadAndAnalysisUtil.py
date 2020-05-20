@@ -24,19 +24,21 @@ class DownloadAndAnalysisUtil:
             r = requests.get(self.productsList[index]['url'], headers=header)
             print("搜索网址为", r.url)
             print("HTTP响应码为（200表示成功响应）", r.status_code)
+
+            # 获取页面失败
+            if r.status_code != 200:
+                print("响应非200，抓取下一个页面")
+
+
+            #  r.text 是str类型，r.content 是bytes类型
+            # print(type(r.text),type(r.content))
+            print("网页编码方式为", type(r.encoding), r.encoding)
+            r.encoding = 'utf-8'
+            return r.text
         except:
             print("获取当前网页失败，抓取下一个网页")
 
-        # 获取页面失败
-        if r.status_code != 200:
-            print("响应非200，抓取下一个页面")
-
-
-        #  r.text 是str类型，r.content 是bytes类型
-        # print(type(r.text),type(r.content))
-        print("网页编码方式为", type(r.encoding), r.encoding)
-        r.encoding = 'utf-8'
-        return r.text
+        return ''
 
     # 找到html 中的description介绍
     def findDescription(self,soup, index):
@@ -59,10 +61,11 @@ class DownloadAndAnalysisUtil:
 
     # 找到文章中的关键信息
     def findCharacter(self,divExceptLabel,index):
-        # TODO 这也是一个需要改进的地方
         # 特征值查找
         # 开始填写characterKeysDict
         self.characterKeyList[index]['产品名'] = self.productsList[index]['productName']
+
+        #TODO 需要细分再优化
         # 检索支持平台
         if 'Win' or 'Windows' in divExceptLabel:
             self.characterKeyList[index]['支持平台'] += 'win '
@@ -93,7 +96,7 @@ class DownloadAndAnalysisUtil:
 
     # 筛选
     def genReport(self,divExceptLabel,index):
-        # TODO 用于文章筛选的关键字， 只有包含这些关键字的语句才会被保留下来，这是后期改进的重点之一
+        # TODO 用于文章筛选的关键字， 只有包含这些关键字的语句才会被保留下来，这是改进的重点之一，需要一个和录屏软件高度相关的词库
         keyList = ['录屏', '画质','图片','麦克风','录制', '录像', '特点','音频', '视频','水印','鼠标','摄像头','功能','色度','抠像']
 
         # 开始利用关键词筛选文本库，生成文章内容
@@ -117,6 +120,7 @@ class DownloadAndAnalysisUtil:
                             # print(repr(content))
                             # print('*' * 10)
 
+
     # 函数解释： 从URL下载网页，提取文字信息，筛选提炼成文，同时找出该产品是否有给出的特性
     def analysisFromDict(self):
         # 循环抓取需要抓取的网页页面 也就是前端输入的产品--产品URL对数
@@ -134,10 +138,6 @@ class DownloadAndAnalysisUtil:
             # 使用body标签内容新建soup对象
             body = soup.find('body')
             soup1 = BeautifulSoup(str(body), 'lxml')
-
-
-            #TODO 选择一张图片下载，作为演示图  现阶段可以后期手工贴图
-            #allImages = soup1.find_all('img')
 
             # 去除HTML标签
             divExceptLabel = re.sub('<[^>]+>', '', soup1.text)
@@ -228,9 +228,3 @@ if __name__ == '__main__':
     print()
     print(tableValue)
 
-    #keys = genReportData.keys()
-
-    # for key in keys:
-    #     for data in genReportData[key]:
-    #         print(str(data).strip())
-    #print(genReportData)
