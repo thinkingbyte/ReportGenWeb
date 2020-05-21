@@ -8,13 +8,14 @@ class DownloadAndAnalysisUtil:
         if len(productsDict['products'])==0:
             print("产品字典中没有产品")
             exit(0)
-        #  productsList [ {name，url}，{name，url}.. ]
+        #  productsList [ {'name':name，'url':url}，{'name':name，'url':url}.. ]
         self.productsList = productsDict['products']
+        #  productsList [ {'col1':'val1','col2':'val2'....}，{'col1':'val1','col2':'val2'....} ]
         self.characterKeyList = characterKeyDict['productItems']
-        # 用来存放对产品名，产品描述
-        self.genReportData = {}
+
 
     def downloadHTML(self,index):
+        # 浏览器伪装
         header = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
         }
@@ -29,15 +30,14 @@ class DownloadAndAnalysisUtil:
             if r.status_code != 200:
                 print("响应非200，抓取下一个页面")
 
-
             #  r.text 是str类型，r.content 是bytes类型
             # print(type(r.text),type(r.content))
             print("网页编码方式为", type(r.encoding), r.encoding)
             r.encoding = 'utf-8'
             return r.text
+
         except:
             print("获取当前网页失败，抓取下一个网页")
-
         return ''
 
     # 找到html 中的description介绍
@@ -45,54 +45,65 @@ class DownloadAndAnalysisUtil:
         # 找到网页中<meta name='description' content='..'> 其中content的内容可以作为产品的介绍部分，因为是写好的
         try:
             productDescription = soup.find('meta', attrs={"name": "description"})['content']
-            self.characterKeyList[index]['产品描述'] = productDescription
-            print("get description")
+            self.productsList[index]['产品描述'] = productDescription
+            #print("get description")
             #return
         except:
-            print("no description")
+            pass
+            #print("no description")
 
         try:
             productDescription = soup.find('meta', attrs={"name": "Description"})['content']
-            self.characterKeyList[index]['产品描述'] = productDescription
-            print("get Description")
+            self.productsList[index]['产品描述'] = productDescription
+            #print("get Description")
             #return
         except:
-            print("no Description")
+            pass
+            #print("no Description")
 
     # 找到文章中的关键信息
     def findCharacter(self,divExceptLabel,index):
+        # TODO 需要细分再优化
         # 特征值查找
         # 开始填写characterKeysDict
-        self.characterKeyList[index]['产品名'] = self.productsList[index]['productName']
-
-        #TODO 需要细分再优化
+        tmpDict = self.characterKeyList[index]
+        tmpDict['产品名'] = self.productsList[index]['productName']
         # 检索支持平台
-        if 'Win' or 'Windows' in divExceptLabel:
-            self.characterKeyList[index]['支持平台'] += 'win '
-        if 'Mac' or 'mac' in divExceptLabel:
-            self.characterKeyList[index]['支持平台'] += 'mac '
-        if '安卓' or 'Android' or 'android' in divExceptLabel:
-            self.characterKeyList[index]['支持平台'] += 'Android'
-
-        # 检索支持水印
-        if '水印' in divExceptLabel:
-            self.characterKeyList[index]['支持水印'] = '是'
-        # 摄像头桌面组合录制
-        if '摄像头' in divExceptLabel:
-            self.characterKeyList[index]['摄像头桌面组合录制'] = '是'
-        # 区域录屏
-        if '区域' or '区域录制' in divExceptLabel:
-            self.characterKeyList[index]['区域录制'] = '是'
-        # 单独音频录制
-        if '音频' or '麦克风' in divExceptLabel:
-            self.characterKeyList[index]['音频录制'] = '是'
-        # 自定义原画和码特率
-        if '音频' or '麦克风' in divExceptLabel:
-            self.characterKeyList[index]['画质调整'] = '是'
-        if '鼠标' in divExceptLabel:
-            self.characterKeyList[index]['鼠标特效'] = '是'
-        if 'VIP' or '会员' or '购买' in divExceptLabel:
-            self.characterKeyList[index]['费用'] = '付费'
+        for key,val in tmpDict.items():
+            if key=='支持平台':
+                if 'Win' or 'Windows' in divExceptLabel:
+                    tmpDict[key] += 'win '
+                if 'Mac' or 'mac' in divExceptLabel:
+                    tmpDict[key] += 'mac '
+                if '安卓' or 'Android' or 'android' in divExceptLabel:
+                    tmpDict[key] += 'Android'
+            if key == '水印':
+                # 检索支持水印
+                if '水印' in divExceptLabel:
+                    tmpDict[key] = '是'
+            if key == '摄像头桌面组合录制':
+                # 检索支持摄像头
+                if '摄像头' in divExceptLabel:
+                    tmpDict[key] = '是'
+            if key == '区域录制':
+                # 区域录屏
+                if '区域' or '区域录制' in divExceptLabel:
+                    tmpDict[key] = '是'
+            if key == '音频录制':
+                # 单独音频录制
+                if '音频' or '麦克风' in divExceptLabel:
+                    tmpDict[key] = '是'
+            if key == '画质调整':
+                # 自定义原画和码特率
+                if '音频' or '麦克风' in divExceptLabel:
+                    tmpDict[key] = '是'
+            if key == '鼠标特效':
+                if '鼠标' in divExceptLabel:
+                    tmpDict[key] = '是'
+            if key == '费用':
+                if 'VIP' or '会员' or '购买' in divExceptLabel:
+                    tmpDict[key] = '付费'
+        self.characterKeyList[index] = tmpDict
 
     # 筛选
     def genReport(self,divExceptLabel,index):
@@ -105,7 +116,8 @@ class DownloadAndAnalysisUtil:
         uniqueContents = set()
 
         # 以产品名作为key值
-        self.genReportData[self.characterKeyList[index]['产品名']] = []
+        #self.genReportData[self.characterKeyList[index]['产品名']] = []
+        self.productsList[index]['content'] = []
         # 输出长度>阈值  且包含关键字的句子，切分之后会产生很多空格项目
         for content in contents:
             if len(content) >= 10:
@@ -116,10 +128,10 @@ class DownloadAndAnalysisUtil:
                         else:
                             # 这样处理的结果是有序的
                             uniqueContents.add(content)
-                            self.genReportData[self.characterKeyList[index]['产品名']].append(content.strip())
+                            #self.genReportData[self.characterKeyList[index]['产品名']].append(content.strip())
+                            self.productsList[index]['content'].append(content.strip())
                             # print(repr(content))
                             # print('*' * 10)
-
 
     # 函数解释： 从URL下载网页，提取文字信息，筛选提炼成文，同时找出该产品是否有给出的特性
     def analysisFromDict(self):
@@ -149,7 +161,7 @@ class DownloadAndAnalysisUtil:
             # 生成文本内容
             self.genReport(divExceptLabel,index)
 
-        return self.genReportData,self.characterKeyList
+        return self.productsList,self.characterKeyList
 
 
 if __name__ == '__main__':

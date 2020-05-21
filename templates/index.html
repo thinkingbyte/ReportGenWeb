@@ -93,275 +93,250 @@
 </head>
 
 </head>
-<body>
+<body style="margin-top: 1em;">
    <div class="container">
-        <!-- 标题 -->
-       <div class="row">
-           <div class="col-md-6 col-md-offset-3" >
-               <h1 class="text-center">产品调研报告自动生成系统</h1>
+       <div class="panel panel-default">
+           <div class="panel-body">
+                <!-- 标题 -->
+               <div class="row">
+                   <div class="col-md-6 col-md-offset-3" >
+                       <h1 class="text-center">产品调研报告自动生成系统</h1>
+                   </div>
+               </div>
+               <hr>
+               <!-- 表单开始 -->
+               <form class="form-signin" action="{% url 'getResult' %}" method="post">
+                    {% csrf_token %}
+                    <!-- 初始输入，3 行，产品名和产品URL  -->
+                   <div class="row">
+                       <div class="col-md-2">
+                           <h4 class="text-right"> 产品名：</h4>
+                       </div>
+                       <div class="col-md-4">
+                          <input type="text" name="product1" class="form-control" placeholder="产品名" required autofocus>
+                       </div>
+                       <div class="col-md-2">
+                           <h4 class="text-right">  产品Url：</h4>
+                       </div>
+                       <div class="col-md-4">
+                          <input type="text" name="productUrl1" class="form-control" placeholder="产品Url链接" required >
+                       </div>
+                   </div>
+                   <hr>
+
+                   <div class="row">
+                       <div class="col-md-2">
+                           <h4 class="text-right"> 产品名：</h4>
+                       </div>
+                       <div class="col-md-4">
+                          <input type="text" name="product2" class="form-control" placeholder="产品名"  required >
+                       </div>
+                       <div class="col-md-2">
+                           <h4 class="text-right">  产品Url：</h4>
+                       </div>
+                       <div class="col-md-4">
+                          <input type="text" name="productUrl2" class="form-control" placeholder="产品Url链接" required>
+                       </div>
+                   </div>
+                   <hr>
+
+                   <div class="row">
+                       <div class="col-md-2">
+                           <h4 class="text-right"> 产品名：</h4>
+                       </div>
+                       <div class="col-md-4">
+                          <input type="text" name="product3" class="form-control" placeholder="产品名" required >
+                       </div>
+                       <div class="col-md-2">
+                           <h4 class="text-right">  产品Url：</h4>
+                       </div>
+                       <div class="col-md-4">
+                          <input type="text" name="productUrl3" class="form-control" placeholder="产品Url链接" required>
+                       </div>
+                   </div>
+                   <hr>
+
+                   <!-- 动态增加行的标签-->
+                   <div id="development_tag">
+                   </div>
+
+
+                    <!-- 用户输入，需要进行对比的关键词 -->
+                   <hr>
+                   <div class="row">
+                       <div class="col-md-4">
+                           <h4 class="text-center">自选产品特性对比：</h4>
+                       </div>
+                       <div class="col-md-8">
+                           <input type="text" name="characters" class="form-control" placeholder="不输入则默认有水印，桌面摄像头组合录制，音频录制，鼠标特效等特点对比"  >
+                       </div>
+                   </div>
+                   <hr>
+
+
+                   <!-- 3个按钮，一个控制新增产品，一个删除新增行，一个控制提交表单 -->
+                   <div class="row">
+                       <div class="col-md-2">
+                           <button class="btn btn-lg btn-primary btn-block" type="button" onclick="addNewRow()">新增</button>
+                       </div>
+                       <div class="col-md-2">
+                           <button class="btn btn-lg btn-primary btn-block" type="button" onclick="deleteAllNewRow()">删除</button>
+                       </div>
+                       <div class="col-md-2">
+                           <input id="numberOfRow" type="hidden" name="numberOfRow" value="">
+                       </div>
+                       <div class="col-md-2"></div>
+                       <div class="col-md-2"></div>
+                       <div class="col-md-2">
+                           <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="getRowNum()">提交</button>
+                       </div>
+                   </div>
+
+               </form>  <!-- end of 表单 -->
+               <hr>
+               {% if tables %}
+                   <br><br>
+                   <div class="alert alert-info" role="alert">报告解析完成！</div>
+               {% endif %}
            </div>
-       </div>
-       <hr>
-
-       <!-- 表单开始 -->
-       <form class="form-signin" action="{% url 'getResult' %}" method="post">
-            {% csrf_token %}
-            <!-- 初始输入，3 行，产品名和产品URL  -->
-           <div class="row">
-               <div class="col-md-2">
-                   <h4 class="text-right"> 产品名：</h4>
-               </div>
-               <div class="col-md-4">
-                  <input type="text" name="product1" class="form-control" placeholder="产品名" required autofocus>
-               </div>
-               <div class="col-md-2">
-                   <h4 class="text-right">  产品Url：</h4>
-               </div>
-               <div class="col-md-4">
-                  <input type="text" name="productUrl1" class="form-control" placeholder="产品Url链接" required >
-               </div>
-           </div>
-           <hr>
-
-           <div class="row">
-               <div class="col-md-2">
-                   <h4 class="text-right"> 产品名：</h4>
-               </div>
-               <div class="col-md-4">
-                  <input type="text" name="product2" class="form-control" placeholder="产品名"  required >
-               </div>
-               <div class="col-md-2">
-                   <h4 class="text-right">  产品Url：</h4>
-               </div>
-               <div class="col-md-4">
-                  <input type="text" name="productUrl2" class="form-control" placeholder="产品Url链接" required>
-               </div>
-           </div>
-           <hr>
-
-           <div class="row">
-               <div class="col-md-2">
-                   <h4 class="text-right"> 产品名：</h4>
-               </div>
-               <div class="col-md-4">
-                  <input type="text" name="product3" class="form-control" placeholder="产品名" required >
-               </div>
-               <div class="col-md-2">
-                   <h4 class="text-right">  产品Url：</h4>
-               </div>
-               <div class="col-md-4">
-                  <input type="text" name="productUrl3" class="form-control" placeholder="产品Url链接" required>
-               </div>
-           </div>
-           <hr>
-
-           <!-- 动态增加行的标签-->
-           <div id="development_tag">
-
-           </div>
-
-
-            <!-- 用户输入，需要进行对比的关键词 -->
-           <hr>
-           <div class="row">
-               <div class="col-md-4">
-                   <h4 class="text-center">自选产品特性对比：</h4>
-               </div>
-               <div class="col-md-8">
-                   <input type="text" name="characters" class="form-control" placeholder="不输入则默认有水印，桌面摄像头组合录制，音频录制，鼠标特效等特点对比"  >
-               </div>
-           </div>
-           <hr>
-
-
-           <!-- 3个按钮，一个控制新增产品，一个删除新增行，一个控制提交表单 -->
-           <div class="row">
-               <div class="col-md-2">
-                   <button class="btn btn-lg btn-primary btn-block" type="button" onclick="addNewRow()">新增</button>
-               </div>
-               <div class="col-md-2">
-                   <button class="btn btn-lg btn-primary btn-block" type="button" onclick="deleteAllNewRow()">删除</button>
-               </div>
-               <div class="col-md-2">
-                   <input id="numberOfRow" type="hidden" name="numberOfRow" value="">
-               </div>
-               <div class="col-md-2"></div>
-               <div class="col-md-2"></div>
-               <div class="col-md-2">
-                   <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="getRowNum()">提交</button>
-               </div>
-           </div>
-
-       </form>  <!-- end of 表单 -->
-
-       <hr>
-
-
-
+        </div>
    </div> <!-- /container -->
    <!--  以下内容是后台爬虫生成的文件  -->
 
    <div class="container">
+        {% if tables %}
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <!--   输出表格  -->
+                   {% if tables %}
+                       <!--   报告标题  -->
+                       <div class="row">
+                           <div class="col-md-6 col-md-offset-3">
+                               <h1 class="text-center">
+                                   产品调研报告
+                               </h1>
+                           </div>
+                       </div>
+                       <!--  引言  -->
+                       <div class="row">
+                           <div class="col-md-12">
+                               <h3>引言</h3><br>
+                               <p >
+                                   录屏软件在我们的生活中扮演着重要的角色。随着网络时代的到来，在线学习已经成为了一种趋势和潮流。
+                                   人们足不出户便可以在网络上享受到 优质的网络学习资源。
+                               </p>
+                               <p >
+                                   而那些在线的网课正是通过录屏软件录制的。在本篇产品调研报告中，我们将介绍和对比几款常见的录屏软件，介绍他们各自的
+                                   特点和优势，且提供了下载链接，以供用户选择参考。
+                               </p>
+                           </div>
+                       </div>
+                       <hr>
+                       <!--   对比表格  -->
+                       <div class="row">
+                           <div class="col-md-12">
+                                <h3>多产品对比</h3><br>
+                           </div>
+                       </div>
+                       <div class="row">
+                            <div class="col-md-12">
+                                <table  class="table"   >
+                                    <tr>
+                                        {#% 表头  单独用个变量%#}
+                                       {% for key in tableKey %}
+                                           <th>{{ key }} </th>
+                                        {% endfor %}
+                                    </tr>
+                                    {#% 表内容  单独用个变量%#}
+                                    {% for table in tables %}
+                                        <tr>
+                                           {% for key,val in table.items %}
+                                               <td>{{ val }} </td>
+                                           {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                               </table><hr>
+                            </div>
 
-    <!--   输出表格  -->
-   {% if tables %}
+                       </div>
+
+                   {% endif %} <!--  end of table  -->
+
+                   {#% 输出产品信息 %#}
+                   {% if products %}
+                       <!--  小标题  -->
+                        <div class="row">
+                               <div class="col-md-12">
+                                    <h3>单产品介绍</h3>
+                               </div>
+                        </div>
+                        {% for product in products %}
+                                {#% 编写标题 %#}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3>{{ product.productName }}</h3>
+                                    </div>
+                                </div>
+
+                                <!-- 插入该官网的图片-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <img src="/static/image/{{ product.productName  }}.jpg" class="img-responsive img-rounded"/>
+                                        <br>
+                                    </div>
+                                </div>
+
+                                {#% 编写简介 %#}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4><b>产品简介</b></h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p>{{ product.产品描述 }}</p><br>
+                                    </div>
+                                </div>
+
+                                {#% 小标题 %#}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4><b>产品特点</b></h4>
+                                    </div>
+                                </div>
+                                {#% 产品内容 %#}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {#% 编写内容 %#}
+                                        {% for sentence in product.content %}
+                                            {{ sentence }}<br>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %}
 
 
-       <br><br><br><br><br>
-       <hr>
+                          <!--  总结  -->
+                       <div class="row">
+                           <div class="col-md-12">
+                               <h2>总结</h2><br>
+                               <p >
+                                   以上便是本次产品调研报告的内容，用户可按照自己的需求对产品进行选择。
+                               </p>
+                           </div>
+                       </div>
+                   {% endif %} <!--  end of 产品介绍  -->
 
-       <!--   报告标题  -->
-       <div class="row">
-           <div class="col-md-6 col-md-offset-3">
-               <h1 class="text-center">
-                   产品调研报告
-               </h1>
+                    <!--  获取后台数据失败  -->
+                   {% if failed %}
+                       <p>获取后台数据失败</p>
+                   {% endif %}
+                </div>
            </div>
-       </div>
-
-       <!--  引言  -->
-       <div class="row">
-           <div class="col-md-12">
-               <h3>引言</h3><br>
-               <p >
-                   录屏软件在我们的生活中扮演着重要的角色。随着网络时代的到来，在线学习已经成为了一种趋势和潮流。
-                   人们足不出户便可以在网络上享受到 优质的网络学习资源。
-               </p>
-               <p >
-                   而那些在线的网课正是通过录屏软件录制的。在本篇产品调研报告中，我们将介绍和对比几款常见的录屏软件，介绍他们各自的
-                   特点和优势，且提供了下载链接，以供用户选择参考。
-               </p>
-           </div>
-       </div>
-       <hr>
-
-
-       <!--   对比表格  -->
-       <div class="row">
-           <div class="col-md-12">
-                <h3>多产品对比</h3>
-           </div>
-       </div>
-       <div class="row">
-            <div class="col-md-12">
-                <table border="1" class="center-block">
-                    <tr>
-                        <th>产品名称</th>
-                        <th>支持平台</th>
-                        <th>支持水印添加</th>
-                        <th>支持桌面、摄像头组合录制</th>
-                        <th>支持区域录屏</th>
-                        <th>支持音频录制</th>
-                        <th>支持自定义原画和码特率</th>
-                        <th>鼠标运动特效</th>
-                        <th>免费/付费</th>
-                        {# <th>下载链接</th> #}
-                    </tr>
-                    {#% 编写表格 %#}
-                   {% for table in tables %}
-                       <tr>
-                            <td>{{ table.产品名 }}</td>
-                            <td>{{ table.支持平台 }}</td>
-                            <td>{{ table.支持水印 }}</td>
-                            <td>{{ table.摄像头桌面组合录制 }}</td>
-                            <td>{{ table.区域录制 }}</td>
-                            <td>{{ table.音频录制 }}</td>
-                            <td>{{ table.画质调整 }}</td>
-                            <td>{{ table.鼠标特效 }}</td>
-                            <td>{{ table.费用 }}</td>
-
-                       </tr>
-                   {% endfor %}
-               </table><hr>
-            </div>
-
-       </div>
-
-   {% endif %} <!--  end of table  -->
-
-
-   {#% 输出产品信息 %#}
-   {% if products %}
-
-
-       <!--  小标题  -->
-        <div class="row">
-               <div class="col-md-12">
-                    <h3>单产品介绍</h3>
-               </div>
         </div>
-        {% for product in products %}
-            {% for key,val in product.items %} <!--  key val ==  '迅捷屏幕录像工具': ['迅捷屏幕录像工具免费试用版Windows', '多模式、多格式、多音源、多种画质可选的屏幕录像工具'....] -->
-                {#% 编写标题 %#}
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>{{ key }}</h3>
-                    </div>
-                </div>
-
-                <!-- 插入该官网的图片-->
-                <div class="row">
-                    <div class="col-md-12">
-                        <img src="/static/image/{{ key }}.jpg" class="img-responsive"/>
-                    </div>
-                </div>
-
-{
-                {#% 编写简介 %#}
-                {% if descriptions %}
-                    {% for item in descriptions %}
-                        {% if item.name == key %}
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4><b>产品简介</b></h4>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p>{{ item.description }}</p><br>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-
-                {% endif %}
-
-
-                {#% 小标题 %#}
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4><b>产品特点</b></h4>
-                    </div>
-                </div>
-                {#% 产品内容 %#}
-                <div class="row">
-                    <div class="col-md-12">
-                        {#% 编写内容 %#}
-                        {% for sentence in val %}
-                            {{ sentence }}<br>
-                        {% endfor %}
-                    </div>
-                </div>
-                <hr>
-            {% endfor %}
-        {% endfor %} <!--  end of 产品文章遍历  -->
-
-          <!--  总结  -->
-       <div class="row">
-           <div class="col-md-12">
-               <h2>总结</h2><br>
-               <p >
-                   以上便是本次产品调研报告的内容，用户可按照自己的需求对产品进行选择。
-               </p>
-           </div>
-       </div>
-   {% endif %} <!--  end of 产品介绍  -->
-
-
-    <!--  获取后台数据失败  -->
-   {% if failed %}
-       <p>获取后台数据失败</p>
-   {% endif %}
+        {% endif %}
    </div>
 
 
