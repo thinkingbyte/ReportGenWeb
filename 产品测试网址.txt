@@ -1,0 +1,75 @@
+
+录屏类软件
+-----------
+Bandicam班迪录屏  https://www.bandicam.cn
+EV录屏  http://www.ieway.cn/evcapture.html
+嗨格式录屏大师 http://www.higeshi.com/lupingdashi
+万彩录屏大师 http://www.wcapture.cn/
+迅捷屏幕录像工具 https://rj.cjxz.com/recordingscreen4/
+录屏高手  http://ggtf.halede1.cn/aipai_files/wxxn/dslp.html
+录屏网 https://www.lupingwang.com/
+KK录像机 http://www.kklxj.com/
+Apowersoft https://www.apowersoft.cn/free-online-screen-recorder
+QVE屏幕录制 http://www.qvevideo.com/
+
+
+视频剪辑类软件
+----------------
+特性：支持平台  4k支持 8k支持 字幕特效 画中画/分割画 VR视频 内容擦除 滤镜支持 内置模板
+----------------
+Adobe After Effects
+https://www.adobe.com/cn/products/aftereffects.html
+Adobe Premiere：
+https://www.adobe.com/cn/products/premiere.html
+iMovie：
+https://www.apple.com.cn/imovie/
+爱剪辑：
+http://www.ijianji.com/list.htm
+
+
+笔记类软件
+-----------
+特性：支持平台，OCR支持，语音支持，MarkDown支持，office支持，PDF支持，多端同步，团队协作，导航搜索
+-----------
+印象笔记 https://www.yinxiang.com/
+有道云笔记 http://note.youdao.com/
+Onenote https://www.microsoft.com/zh-cn/microsoft-365/onenote/
+为知 https://www.wiz.cn/zh-cn
+
+
+单词类软件
+-----------
+特性：屏幕取词，多语种，网络释义，音视频，打卡，形象图片，AI自适应，场景搭配，词组短语，闯关
+-----------
+词条筛选：['词典','词库','词汇','词根','词缀','词表','音频','视频','语种','语言','语境','翻译','词量','词汇量','社区','实践',
+'卡片','英语','听力','口语','场景','单词','碎片时间','语料','AI','学习','生词本','进步']
+-----------
+网易有道词典 http://cidian.youdao.com/
+扇贝单词 https://www.shanbay.com/
+百词斩 http://www.baicizhan.com/
+极光单词 https://www.jiguangdanci.com/
+知米英语 http://iwordnet.com/
+开心词场 https://cichang.hujiang.com/
+
+会议类软件
+-----------
+特性：考勤，视频会议，直播，电话接入，支持小程序，云记录，远程屏幕控制
+-----------
+词条筛选：['组织','效率','业务','沟通','管理','数字化','通讯录','群','信息','协作',
+'远程','办公','会议','灵活','平台','小程序','日历','体验','语音','音频','视频','分享','文档','屏幕','文字','聊天',
+'移动','智能','开放','安全','','','','','',]
+钉钉 https://www.dingtalk.com/
+zoom https://www.zoom.com.cn/meetings
+飞书 https://www.feishu.cn/
+快会 http://www.kuaihuiyi.com/
+Boom https://www.boommeeting.com/system/main/index
+企业微信 https://work.weixin.qq.com/
+
+
+
+
+
+
+
+
+

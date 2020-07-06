@@ -24,6 +24,56 @@
 ## 版本迭代
 ---
 
+### v 0.0.4
+
+新增了可选产品的类别，现在总共可选的产品类别有
+
+- 录屏类软件
+- 视频剪辑类软件
+- 笔记类软件
+- 单词类软件
+- 在线会议类软件
+
+存在的问题，新增的产品类，在文本内容筛选中仍然需要继续优化，可读性不强。
+
+![image-20200706213249935](picForMarkDown/image-20200706213249935.png)
+
+视频剪辑类软件
+
+![image-20200706213347099](picForMarkDown/image-20200706213347099.png)
+
+![image-20200706213410505](picForMarkDown/image-20200706213410505.png)
+
+![image-20200706213440271](picForMarkDown/image-20200706213440271.png)
+
+笔记类软件
+
+![image-20200706213522572](picForMarkDown/image-20200706213522572.png)
+
+![image-20200706213540417](picForMarkDown/image-20200706213540417.png)
+
+![image-20200706213553596](picForMarkDown/image-20200706213553596.png)
+
+单词类软件
+
+![image-20200706213717033](picForMarkDown/image-20200706213717033.png)
+
+![image-20200706213740101](picForMarkDown/image-20200706213740101.png)
+
+![image-20200706213759644](picForMarkDown/image-20200706213759644.png)
+
+在线会议类软件
+
+![image-20200706214008171](picForMarkDown/image-20200706214008171.png)
+
+![image-20200706214034673](picForMarkDown/image-20200706214034673.png)
+
+![image-20200706214055626](picForMarkDown/image-20200706214055626.png)
+
+
+
+---
+
 ### v 0.0.3
 
 对界面进行部分CSS美化，用户可以输入和录屏软件相关的自定义特性。
@@ -53,7 +103,6 @@
 ![image-20200521142138873](picForMarkDown/image-20200521142138873.png)
 
 ![image-20200521142155211](picForMarkDown/image-20200521142155211.png)
-
 
 
 
@@ -93,6 +142,5 @@
 
 
 系统生成的报告是粗糙的，需要经过人工二次审校放能使用。（V 0.0.1）
-
 
 ---

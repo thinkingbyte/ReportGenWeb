@@ -3,10 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>录屏产品调研报告生成系统</title>
+    <title>软件类产品调研报告生成系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="{% static "/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+
 
     <!-- js 函数 动态地为用户的输入增加新行 -->
     <script>
@@ -90,20 +93,61 @@
 
         }
     </script>
-</head>
+
+    <script >
+        $(document).ready(function(){
+            $("li").click(function () {
+                var now_text = $(this).text()
+                //alert(now_text)
+                $("#product_type_show").text(now_text);
+                $("#product_type_input").val(now_text);
+            });
+        });
+
+    </script>
 
 </head>
+
 <body style="margin-top: 1em;">
+
+    {# 系统前端界面 #}
    <div class="container">
        <div class="panel panel-default">
            <div class="panel-body">
                 <!-- 标题 -->
                <div class="row">
                    <div class="col-md-6 col-md-offset-3" >
-                       <h1 class="text-center">录屏产品调研报告自动生成系统</h1>
+                       <h1 id="title" class="text-center"><a href="{% url 'home' %}"> 产品调研报告自动生成系统</a></h1>
                    </div>
                </div>
                <hr>
+                <!--产品类型选择-->
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-4">
+                        <h4 class="text-center"> 产品类型：</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <!-- Single button -->
+                        <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 200%;" >
+                                  <span id="product_type_show">点击选择</span> <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu" >
+                                    <li><a>录屏类软件</a></li>
+                                    <li><a>视频剪辑类软件</a></li>
+                                    <li><a>会议类软件</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a>笔记类软件</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a>单词类软件</a></li>
+
+                              </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                </div>
+                <hr/>
                <!-- 表单开始 -->
                <form class="form-signin" action="{% url 'getResult' %}" method="post">
                     {% csrf_token %}
@@ -156,6 +200,9 @@
                    </div>
                    <hr>
 
+                    <!-- 软件产品的类型 默认为录屏类软件-->
+                   <input type="hidden" name="product_type_input" id="product_type_input" value="录屏类软件"/>
+
                    <!-- 动态增加行的标签-->
                    <div id="development_tag">
                    </div>
@@ -168,7 +215,7 @@
                            <h4 class="text-center">自选产品特性对比：</h4>
                        </div>
                        <div class="col-md-8">
-                           <input type="text" name="characters" class="form-control" placeholder="不输入则默认有水印，桌面摄像头组合录制，音频录制，鼠标特效等特点对比"  >
+                           <input type="text" name="characters" class="form-control" placeholder="不输入则为默认特性,输入特性需以空格隔开"  >
                        </div>
                    </div>
                    <hr>
@@ -203,6 +250,7 @@
    </div> <!-- /container -->
    <!--  以下内容是后台爬虫生成的文件  -->
 
+    {# 报告界面 #}
    <div class="container">
         {% if tables %}
         <div class="container">
@@ -222,14 +270,7 @@
                        <div class="row">
                            <div class="col-md-12">
                                <h3>引言</h3><br>
-                               <p >
-                                   录屏软件在我们的生活中扮演着重要的角色。随着网络时代的到来，在线学习已经成为了一种趋势和潮流。
-                                   人们足不出户便可以在网络上享受到 优质的网络学习资源。
-                               </p>
-                               <p >
-                                   而那些在线的网课正是通过录屏软件录制的。在本篇产品调研报告中，我们将介绍和对比几款常见的录屏软件，介绍他们各自的
-                                   特点和优势，且提供了下载链接，以供用户选择参考。
-                               </p>
+                               {{ product_preface }}
                            </div>
                        </div>
                        <hr>
@@ -322,9 +363,12 @@
                        <div class="row">
                            <div class="col-md-12">
                                <h2>总结</h2><br>
+                               <!--
                                <p >
                                    以上便是本次产品调研报告的内容，用户可按照自己的需求对产品进行选择。
                                </p>
+                               -->
+                               {{ product_closing }}
                            </div>
                        </div>
                    {% endif %} <!--  end of 产品介绍  -->
@@ -340,8 +384,6 @@
    </div>
 
 
-   <!--  bootstra 要求加载的文件  -->
-   <script src="https://code.jquery.com/jquery.js"></script>
-   <script src="{% static "/js/bootstrap.min.js" %}"></script>
+
 </body>
 </html>
