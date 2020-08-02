@@ -188,8 +188,7 @@ class DownloadAndAnalysisUtil:
                             uniqueContents.add(content)
                             # self.genReportData[self.characterKeyList[index]['产品名']].append(content.strip())
                             self.productsList[index]['content'].append(content.strip())
-                            # print(repr(content))
-                            # print('*' * 10)
+                            self.productsList[index]['content'].append('\n')
 
     # 视频剪辑类软件产品特性筛选
     def character_for_video_clips(self, divExceptLabel, index):
@@ -237,8 +236,8 @@ class DownloadAndAnalysisUtil:
     # 视频剪辑类软件产品的文本生成
     def gen_report_for_video_clips(self, divExceptLabel, index):
         # TODO 用于文章筛选的关键字， 只有包含这些关键字的语句才会被保留下来，这是改进的重点之一，需要一个和录屏软件高度相关的词库
-        keyList = ['产品', '视频剪辑', '特效', '滤镜', '调色', '画面', '剪辑软件', '水印', '视频', '水印', '音频格式',
-                   '4K', '8K', 'VR', '字幕', '配乐', '剪辑', '发布', '协作', '扩展']
+        keyList = ['产品', '视频', '特效', '滤镜', '调色', '画面', '剪辑', '水印', '视频', '水印', '音频',
+                   '4K', '8K', 'VR', '字幕', '配乐',  '发布', '协作', '扩展']
 
         # 开始利用关键词筛选文本库，生成文章内容
         contents = divExceptLabel.split('\n')
@@ -259,6 +258,7 @@ class DownloadAndAnalysisUtil:
                             # 这样处理的结果是有序的
                             uniqueContents.add(content)
                             self.productsList[index]['content'].append(content.strip())
+                            self.productsList[index]['content'].append('\n')
 
     # 笔记软件类的产品特性筛选
     def character_for_take_note(self,divExceptLabel,index):
@@ -329,8 +329,7 @@ class DownloadAndAnalysisUtil:
                             uniqueContents.add(content)
                             # self.genReportData[self.characterKeyList[index]['产品名']].append(content.strip())
                             self.productsList[index]['content'].append(content.strip())
-                            # print(repr(content))
-                            # print('*' * 10)
+                            self.productsList[index]['content'].append('\n')
 
     # 单词类软件产品特性筛选
     def character_for_words(self, divExceptLabel, index):
@@ -398,7 +397,7 @@ class DownloadAndAnalysisUtil:
         self.productsList[index]['content'] = []
         # 输出长度>阈值  且包含关键字的句子，切分之后会产生很多空格项目
         for content in contents:
-            if len(content) >= 10:
+            if len(content) >= 4:
                 for key in keyList:
                     if key in content:
                         if content in uniqueContents:
@@ -407,6 +406,7 @@ class DownloadAndAnalysisUtil:
                             # 这样处理的结果是有序的
                             uniqueContents.add(content)
                             self.productsList[index]['content'].append(content.strip())
+                            self.productsList[index]['content'].append('\n')
 
     # 会议类软件产品特性筛选
     def character_for_meeting(self, divExceptLabel, index):
@@ -454,7 +454,9 @@ class DownloadAndAnalysisUtil:
     # 会议类软件产品的文本生成
     def gen_report_for_meeting(self, divExceptLabel, index):
         # TODO 用于文章筛选的关键字， 只有包含这些关键字的语句才会被保留下来，这是改进的重点之一，需要一个和录屏软件高度相关的词库
-        keyList = ['组织','效率','业务','沟通','管理','数字化','通讯录','群','信息','协作','远程','办公','会议','灵活','平台','小程序','日历','体验','语音','音频','视频','分享','文档','屏幕','文字','聊天','移动','智能','开放','安全']
+        keyList = ['组织','效率','业务','沟通','管理','数字化','通讯录','群','信息',
+                   '协作','远程','办公','会议','灵活','平台','小程序','日历','体验',
+                   '语音','音频','视频','分享','文档','屏幕','文字','聊天','移动','智能','开放','安全']
 
         # 开始利用关键词筛选文本库，生成文章内容
         contents = divExceptLabel.split('\n')
@@ -475,6 +477,7 @@ class DownloadAndAnalysisUtil:
                             # 这样处理的结果是有序的
                             uniqueContents.add(content)
                             self.productsList[index]['content'].append(content.strip())
+                            self.productsList[index]['content'].append('\n')
 
     # 确定该产品支持的平台
     def find_support_platform(self,key,divExceptLabel,tmpDict):

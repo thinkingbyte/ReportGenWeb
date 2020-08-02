@@ -12,6 +12,21 @@
 
 目前版本v 0.0.3
 
+---
+*环境配置*
+
+安装依赖
+pip install -r requests.txt
+
+修改setting.py数据库配置为自己的数据库
+
+python manager.py migrate 生成必要表
+
+python manager.py createsuperuser 创建超级管理员
+
+---
+
+
 
 
 **仍待优化的问题**
@@ -35,6 +50,11 @@
 - 在线会议类软件
 
 存在的问题，新增的产品类，在文本内容筛选中仍然需要继续优化，可读性不强。
+
+部分网站兼容性不强，如企业微信和飞书，仍需改进调试。
+
+以下是部分演示截图，
+
 
 ![image-20200706213249935](picForMarkDown/image-20200706213249935.png)
 
